@@ -50,7 +50,7 @@ class SocketService{
             console.log(`New Socket Connected`, socket.id);
 
             socket.on('event:message', async ({message}: {message: string}) => {
-                console.log("Ne message recieved.", message);
+                console.log("New message recieved.", message);
                 //publish this message to redis
                 await pub.publish("MESSAGES", JSON.stringify({message}));
             });
@@ -58,6 +58,7 @@ class SocketService{
 
         sub.on('message', (channel, message) => {
             if (channel === message) {
+                console.log("New message from Redis", message);
                 io.emit("message", message);
             }
         });
